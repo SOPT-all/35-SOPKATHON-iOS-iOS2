@@ -22,7 +22,7 @@
 		784ACFC62CEF6245002C6313 /* Exceptions for "Soptkaton" folder in "Soptkaton" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resource/Info.plist,
 			);
 			target = 784ACFB32CEF6244002C6313 /* Soptkaton */;
 		};
