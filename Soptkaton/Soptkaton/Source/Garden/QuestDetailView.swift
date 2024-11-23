@@ -91,6 +91,7 @@ struct QuestDetailView: View {
                     Text(questData?.quest_description ?? "")
                         .font(.jungleBody(.body2m14))
                         .foregroundStyle(Color(.jungleSystemColor(.white)))
+                        .multilineTextAlignment(.center)
                         .font(.jungleBody(.body2m14))
                         .frame(width: 279, height: 54)
                         .offset(y: 134)
