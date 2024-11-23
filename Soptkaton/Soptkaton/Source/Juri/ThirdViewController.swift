@@ -7,23 +7,35 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 class ThirdViewController: UIViewController {
+
+    private let storyLabel = UILabel().then {
+        $0.text = "안녕하시렵니까? 스토리텔링 화면입니다만.. 무얼 더 해야하죠...."
+        $0.numberOfLines = 0
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        setHierarchy()
+        setLayout()
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func setHierarchy() {
+        view.addSubview(storyLabel)
     }
-    */
+    
+    private func setLayout() {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        storyLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(10)
+        }
+        
+    }
 
 }
