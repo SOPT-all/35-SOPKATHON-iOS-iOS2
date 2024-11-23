@@ -3,6 +3,7 @@
 
 ## 소개
 **정글 탈출 !**
+
 정글과 다름없는 거친 세상에서 살아남기 위해 퀘스트를 깨며 작은 성취감을 쌓아나가는 서비스
 
 ## 기술
@@ -12,9 +13,11 @@
 ## 브랜치 전략
 <aside>
 🌵 브랜치 이름 : `커밋타입/#이슈번호` - 예시) `feat/#3`
-
 </aside>
+
 - 브랜치 이름은 소문자로 한다.
+
 - default branch : `develop`
 
 ## 우리들의 사진(before)
+<img src = "https://github.com/user-attachments/assets/639cc2f5-b854-4fdd-9ab7-5c97fc75f92c" width ="250">|
