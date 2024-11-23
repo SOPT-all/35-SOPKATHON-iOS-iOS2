@@ -12,7 +12,6 @@ struct QuestDetailView: View {
     @State private var showImagePicker = false
     @State private var selectedImage: UIImage?
     var onPhotoTaken: (() -> Void)?
-
     
     var body: some View {
         ZStack {
@@ -105,16 +104,18 @@ struct QuestDetailView: View {
                 Spacer()
             }
         }
-        .sheet(isPresented: $showImagePicker) {
-                    ImagePicker(image: $selectedImage, sourceType: .camera) {
-                        if selectedImage != nil {
-                            dismiss()
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                onPhotoTaken?()
-                            }
-                        }
+        .fullScreenCover(isPresented: $showImagePicker) {
+            ImagePicker(image: $selectedImage, sourceType: .camera) {
+                if selectedImage != nil {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        onPhotoTaken?()
                     }
                 }
+            }
+            .edgesIgnoringSafeArea(.all)
+            .navigationBarHidden(true)   
+        }
         .ignoresSafeArea()
         .navigationBarHidden(true)
     }
