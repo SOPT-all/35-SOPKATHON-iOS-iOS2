@@ -18,17 +18,19 @@ final class CustomAlertViewController: UIViewController {
     private let titleLabel = UILabel().then {
         $0.text = "생존 성공"
         $0.font = .jungleHeading(.heading4b18)
+        $0.textColor = .jungleGrayScale(.gray1)
     }
     private let descriptionLabel = UILabel().then {
         $0.font = .jungleBody(.body1b16)
         $0.numberOfLines = 2
+        $0.textColor = .jungleGrayScale(.gray3)
     }
     private lazy var imageView = UIImageView().then {
-        $0.image = .appLogo
+        $0.image = .imgPopupItem
         $0.contentMode = .scaleAspectFit
     }
     private lazy var okButton = UIButton().then {
-        $0.setTitle("완료", for: .normal)
+        $0.setTitle("완료하기", for: .normal)
         $0.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         $0.titleLabel?.font = .jungleBody(.body1b16)
         $0.setTitleColor(.jungleSystemColor(.white), for: .normal)
