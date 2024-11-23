@@ -11,19 +11,16 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let firstViewController = UINavigationController(rootViewController: FirstViewController())
+        let secondViewController = UINavigationController(rootViewController: SecondViewController())
+        let thirdViewController = UINavigationController(rootViewController: ThirdViewController())
+        
+        firstViewController.tabBarItem = UITabBarItem(title: "1", image: UIImage(systemName: "house.fill"), tag: 0)
+        secondViewController.tabBarItem = UITabBarItem(title: "2", image: UIImage(systemName: "house.fill"), tag: 1)
+        thirdViewController.tabBarItem = UITabBarItem(title: "3", image: UIImage(systemName: "house.fill"), tag: 2)
+        
+        viewControllers = [firstViewController, secondViewController, thirdViewController]
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
