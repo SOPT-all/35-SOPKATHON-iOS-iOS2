@@ -12,34 +12,39 @@ import Then
 
 class HomeViewController: UIViewController {
     
-    private let levelLabel = UILabel().then {
-        $0.text = "Lv. 2"
-        $0.font = .jungleHeading(.heading3b20)
-        $0.textColor = .jungleGrayScale(.gray1)
-    }
+    private let containerView = UIView()
     
-    private let expProgressImage = UIImageView().then {
-        $0.image = .rectangle5
-    }
-    
-    private let expProgressLabel = UILabel().then {
-        $0.text = "85/135"
-        $0.font = .jungleBody(.body2m14)
-        $0.textColor = .jungleGrayScale(.gray1)
+    private let headerImage = UIImageView().then {
+        $0.image = .headerLogo
     }
     
     private let characterImage = UIImageView().then {
-        $0.image = .character
+        $0.image = UIImage(systemName: "person")
+        $0.contentMode = .scaleAspectFit
+        $0.backgroundColor = .jungleGrayScale(.gray6)
+        $0.makeCornerRadius(cornerRadius: 16)
+    }
+    
+    private let levelLabel = UILabel().then {
+        $0.font = .jungleBody(.body1m16)
+        $0.textColor = .jungleGrayScale(.gray1)
+        $0.textAlignment = .center
+    }
+    
+    private let expLabel = UILabel().then {
+        $0.font = .jungleBody(.body1m16)
+        $0.textColor = .jungleMainColor(.main)
+        $0.textAlignment = .center
     }
     
     private let questTitleLabel = UILabel().then {
-        $0.text = "생존 전략"
+        $0.text = "오늘의 탈출 전략"
         $0.font = .jungleHeading(.heading2b22)
         $0.textColor = .jungleGrayScale(.gray1)
+        $0.textAlignment = .center
     }
     
     private let questView = QuestView().then {
-        $0.configure()
         $0.makeCornerRadius(cornerRadius: 16)
     }
     
@@ -49,57 +54,73 @@ class HomeViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         setHierarchy()
         setLayout()
+        configure()
     }
-    
 
     private func setHierarchy() {
-        self.view.addSubviews(
-            levelLabel,
-            expProgressImage,
-            expProgressLabel,
+        self.containerView.addSubviews(
+            headerImage,
             characterImage,
+            levelLabel,
+            expLabel,
             questTitleLabel,
             questView
         )
+        
+        self.view.addSubview(containerView)
     }
     
     private func setLayout() {
-        levelLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(16)
-            $0.leading.equalToSuperview().inset(30)
+        containerView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(24)
         }
         
-        expProgressImage.snp.makeConstraints {
-            $0.top.equalTo(levelLabel.snp.bottom).offset(12)
-            $0.leading.equalToSuperview().inset(23)
-            $0.width.equalTo(300)
-            $0.height.equalTo(13)
-        }
-        
-        expProgressLabel.snp.makeConstraints {
-            $0.centerY.equalTo(expProgressImage)
-            $0.trailing.equalToSuperview().inset(24)
+        headerImage.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            $0.leading.equalToSuperview()
+            $0.width.equalTo(128)
+            $0.height.equalTo(32)
         }
         
         characterImage.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(expProgressImage.snp.bottom).offset(100)
-            $0.width.equalTo(144)
-            $0.height.equalTo(224)
+            $0.top.equalTo(headerImage.snp.bottom).offset(22)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(437)
+        }
+        
+        levelLabel.snp.makeConstraints {
+            $0.top.equalTo(characterImage.snp.top).inset(20)
+            $0.leading.equalToSuperview().inset(14)
+        }
+        
+        expLabel.snp.makeConstraints {
+            $0.top.equalTo(levelLabel.snp.top)
+            $0.trailing.equalToSuperview().inset(14)
         }
         
         questTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(characterImage.snp.bottom).offset(143)
-            $0.leading.equalToSuperview().inset(32)
+            $0.top.equalTo(characterImage.snp.bottom).offset(44)
+            $0.leading.equalToSuperview()
         }
         
         questView.snp.makeConstraints {
-            $0.top.equalTo(questTitleLabel.snp.bottom).offset(10)
-            $0.horizontalEdges.equalToSuperview().inset(24)
-            $0.height.equalTo(72)   
+            $0.top.equalTo(questTitleLabel.snp.bottom).offset(24)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(82)
         }
     }
 
+    func configure() {
+        levelLabel.text = "레벨 1"
+        expLabel.text = "70/100"
+        
+        questView.configure(
+            title: "체력 단련",
+            level: "고급",
+            subtitle: "정글에서 강인한 체력은 필수!"
+        )
+    }
 }
 
 #if DEBUG
