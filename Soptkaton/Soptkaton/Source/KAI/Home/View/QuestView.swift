@@ -12,34 +12,47 @@ import Then
 
 class QuestView: UIView {
     
-    private let questTitleLabel = UILabel().then {
-        $0.font = .jungleHeading(.heading2b22)
-        $0.textColor = .jungleGrayScale(.gray1)
+    private let imageContainerView = UIView().then {
+        $0.backgroundColor = .jungleMainColor(.main)
+        $0.makeCornerRadius(cornerRadius: 23)
     }
     
-    private let challengeLabel = UILabel().then {
-        $0.font = .jungleBody(.body2m14)
-        $0.textColor = .jungleGrayScale(.gray5)
+    private let keyLogoImageView = UIImageView().then {
+        $0.image = .icKeyWhite
+        $0.contentMode = .center
+    }
+    
+    private let questTitleStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 8
+    }
+    
+    private let questTitleLabel = UILabel().then {
+        $0.font = .jungleBody(.body1b16)
+        $0.textColor = .jungleGrayScale(.gray1)
         $0.textAlignment = .center
-        $0.backgroundColor = .jungleGrayScale(.gray9)
-        $0.makeBorder(width: 1, color: .jungleGrayScale(.gray8))
+    }
+    
+    private let labelContainerView = UIView().then {
+        $0.backgroundColor = .jungleMainColor(.sub)
         $0.makeCornerRadius(cornerRadius: 6)
+    }
+    
+    private let levelLabel = UILabel().then {
+        $0.font = .jungleBody(.body2m14)
+        $0.textColor = .jungleMainColor(.main)
+        $0.textAlignment = .center
     }
     
     private let questSubTitleLabel = UILabel().then {
         $0.font = .jungleBody(.body2m14)
-        $0.textColor = .jungleGrayScale(.gray1)
-    }
-    
-    private let nextButton = UIButton().then {
-        $0.backgroundColor = .black
-        $0.layer.cornerRadius = 16
-        $0.layer.masksToBounds = true
+        $0.textColor = .jungleGrayScale(.gray5)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .jungleGrayScale(.gray5)
+        
+        self.backgroundColor = .jungleGrayScale(.gray9)
         setHierarchy()
         setLayout()
     }
@@ -49,51 +62,58 @@ class QuestView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(
+        imageContainerView.addSubview(keyLogoImageView)
+        
+        labelContainerView.addSubview(levelLabel)
+        
+        questTitleStackView.addArrangedSubviews(
             questTitleLabel,
-            challengeLabel,
-            questSubTitleLabel,
-            nextButton
+            labelContainerView
+        )
+        
+        self.addSubviews(
+            imageContainerView,
+            questTitleStackView,
+            questSubTitleLabel
         )
     }
     
     private func setLayout() {
-        questTitleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().inset(16)
+        imageContainerView.snp.makeConstraints {
+            $0.size.equalTo(46)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(12)
         }
         
-        challengeLabel.snp.makeConstraints {
-            $0.centerY.equalTo(questTitleLabel)
-            $0.leading.equalTo(questTitleLabel.snp.trailing).offset(10)
+        keyLogoImageView.snp.makeConstraints {
+            $0.size.equalTo(24)
+            $0.center.equalTo(imageContainerView)
+        }
+        
+        labelContainerView.snp.makeConstraints {
             $0.width.equalTo(36)
             $0.height.equalTo(22)
         }
         
-        questSubTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(challengeLabel.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().inset(16)
+        levelLabel.snp.makeConstraints {
+            $0.center.equalTo(labelContainerView)
         }
         
-        nextButton.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(16)
-            $0.size.equalTo(32)
+        questTitleStackView.snp.makeConstraints {
+            $0.top.equalTo(imageContainerView.snp.top).inset(1.5)
+            $0.leading.equalTo(imageContainerView.snp.trailing).offset(12)
+        }
+        
+        questSubTitleLabel.snp.makeConstraints {
+            $0.bottom.equalTo(imageContainerView.snp.bottom).inset(1.5)
+            $0.leading.equalTo(questTitleStackView.snp.leading)
         }
     }
     
-    func configure() {
-        questTitleLabel.text = "체력 단련"
-        challengeLabel.text = "중급"
-        questSubTitleLabel.text = "정글에서 강인한 체력은 필수!"
+    func configure(title: String, level: String, subtitle: String) {
+        questTitleLabel.text = title
+        levelLabel.text = level
+        questSubTitleLabel.text = subtitle
     }
     
 }
-
-#if DEBUG
-import SwiftUI
-
-#Preview {
-    
-    QuestView()
-}
-
-#endif
