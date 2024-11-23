@@ -14,7 +14,10 @@ enum HomeTargetType {
 
 extension HomeTargetType: TargetType {
     var baseURL: URL {
-        return URL(string: "YOUR_BASE_URL")!
+        guard let url = Bundle.main.baseURL else {
+            fatalError("Invalid BASE_URL in Info.plist")
+        }
+        return url
     }
     
     var path: String {
@@ -24,7 +27,7 @@ extension HomeTargetType: TargetType {
     
     var method: Moya.Method {
         switch self {
-
+            
         }
     }
     
