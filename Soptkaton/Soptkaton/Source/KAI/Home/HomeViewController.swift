@@ -56,6 +56,14 @@ class HomeViewController: UIViewController {
         setupNavigationLogo()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // 네비게이션 바 보이기 설정
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     private func setHierarchy() {
         self.containerView.addSubviews(
             characterImage,
@@ -128,10 +136,10 @@ class HomeViewController: UIViewController {
      }
 }
 
-// MARK: - Navigation
+
 extension HomeViewController {
     private func pushToQuestDetailView() {
-        var questDetailView = QuestDetailView(onPhotoTaken: { [weak self] in
+        let questDetailView = QuestDetailView(onPhotoTaken: { [weak self] in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self?.showCustomAlert()
             }
@@ -141,8 +149,9 @@ extension HomeViewController {
         hostingController.navigationItem.hidesBackButton = true
         setupCustomBackButton(for: hostingController)
         
-        hostingController.hidesBottomBarWhenPushed = true
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
+        hostingController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(hostingController, animated: true)
     }
     
@@ -161,7 +170,6 @@ extension HomeViewController {
     }
 }
 
-// MARK: - Alert
 extension HomeViewController {
     private func showCustomAlert() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
