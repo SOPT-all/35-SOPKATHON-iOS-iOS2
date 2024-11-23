@@ -13,7 +13,7 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
 
         let firstViewController = UINavigationController(rootViewController: HomeViewController())
-        let secondViewController = UINavigationController(rootViewController: SecondViewController())
+        let secondViewController = UINavigationController(rootViewController: ViewController())
 
         firstViewController.tabBarItem = UITabBarItem(
             title: "",

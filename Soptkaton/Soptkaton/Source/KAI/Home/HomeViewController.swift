@@ -16,7 +16,7 @@ class HomeViewController: UIViewController {
     private let containerView = UIView()
     
     private let characterImage = UIImageView().then {
-        $0.image = UIImage(systemName: "person")
+        $0.image = .imgLevel1
         $0.contentMode = .scaleAspectFit
         $0.backgroundColor = .jungleGrayScale(.gray6)
         $0.makeCornerRadius(cornerRadius: 16)
@@ -24,7 +24,7 @@ class HomeViewController: UIViewController {
     
     private let levelLabel = UILabel().then {
         $0.font = .jungleBody(.body1m16)
-        $0.textColor = .jungleGrayScale(.gray1)
+        $0.textColor = .jungleSystemColor(.white)
         $0.textAlignment = .center
     }
     
@@ -32,6 +32,10 @@ class HomeViewController: UIViewController {
         $0.font = .jungleBody(.body1m16)
         $0.textColor = .jungleMainColor(.main)
         $0.textAlignment = .center
+    }
+    
+    private let expImageView = UIImageView().then {
+        $0.image = .progressbar70
     }
     
     private let questTitleLabel = UILabel().then {
@@ -69,6 +73,7 @@ class HomeViewController: UIViewController {
             characterImage,
             levelLabel,
             expLabel,
+            expImageView,
             questTitleLabel,
             questView
         )
@@ -98,13 +103,18 @@ class HomeViewController: UIViewController {
             $0.trailing.equalToSuperview().inset(14)
         }
         
+        expImageView.snp.makeConstraints {
+            $0.top.equalTo(expLabel.snp.bottom).offset(14)
+            $0.trailing.equalToSuperview().inset(14)
+        }
+        
         questTitleLabel.snp.makeConstraints {
             $0.top.equalTo(characterImage.snp.bottom).offset(44)
             $0.leading.equalToSuperview()
         }
         
         questView.snp.makeConstraints {
-            $0.top.equalTo(questTitleLabel.snp.bottom).offset(24)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-22)
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(82)
         }

@@ -11,10 +11,8 @@ import Then
 
 class ThirdViewController: UIViewController {
 
-    private let storyLabel = UILabel().then {
-        $0.text = "안녕하시렵니까? 스토리텔링 화면입니다만.. 무얼 더 해야하죠...."
-        $0.numberOfLines = 0
-        $0.textAlignment = .center
+    private let storyImageView = UIImageView().then {
+        $0.image = .imgOnboarding
     }
     
     override func viewDidLoad() {
@@ -39,13 +37,12 @@ class ThirdViewController: UIViewController {
     }
     
     private func setHierarchy() {
-        view.addSubview(storyLabel)
+        view.addSubview(storyImageView)
     }
     
     private func setLayout() {
-        storyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+        storyImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     
     }
