@@ -13,11 +13,14 @@ struct QuestDetailView: View {
     @State private var selectedImage: UIImage?
     var onPhotoTaken: (() -> Void)?
     
+    private let width: CGFloat = UIScreen.main.bounds.width
+    private let height: CGFloat = UIScreen.main.bounds.height
+    
     var body: some View {
         ZStack {
             LinearGradient(colors: [Color(.jungleGradientColor(.start)), Color(.jungleGradientColor(.end))], startPoint: .topLeading, endPoint: .bottomTrailing)
 
-            VStack(spacing: 0) {
+            VStack() {
                 HStack {
                     Button(action: {
                         dismiss()
@@ -29,7 +32,7 @@ struct QuestDetailView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 16)
-                .frame(height: 44)
+                .frame(height: 56)
                 .padding(.top, getSafeArea().top)
                 
                 ZStack {
@@ -84,11 +87,12 @@ struct QuestDetailView: View {
                     }
                     
                     Text("빌딩숲이 가득한 세상 속에서 두 발로 걸으며 체력을 단련해보자! 계단 50개를 올라가다 보면 머리도 맑아질 거야.")
-                        .font(.jungleBody(.body2m14))
                         .foregroundStyle(Color(.jungleSystemColor(.white)))
+                        .font(.jungleBody(.body2m14))
                         .frame(width: 279, height: 54)
                         .offset(y: 134)
                 }
+                .offset(y: 24)
                 
                 Button(action: {
                     showImagePicker = true
@@ -100,6 +104,7 @@ struct QuestDetailView: View {
                 .foregroundStyle(Color(.jungleSystemColor(.white)))
                 .font(.jungleBody(.body1b16))
                 .cornerRadius(12)
+                .offset(y: 47)
                 
                 Spacer()
             }
