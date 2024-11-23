@@ -11,7 +11,7 @@
 * Libraries: Alamofire, Kingfisher, Moya, ReactiveSwift, RxSwift, SnapKit, Then
 
 ## 브랜치 전략
-* 브랜치 이름 : ₩커밋타입/#이슈번호₩ - 예시) ₩feat/#3₩
+* 브랜치 이름 : `커밋타입/#이슈번호` - 예시) `feat/#3`
 
 - 브랜치 이름은 소문자로 한다.
 
