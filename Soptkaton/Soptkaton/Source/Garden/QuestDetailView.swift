@@ -8,12 +8,28 @@
 import SwiftUI
 
 struct QuestDetailView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         ZStack {
             LinearGradient(colors: [Color(.jungleGradientColor(.start)), Color(.jungleGradientColor(.end))], startPoint: .topLeading, endPoint: .bottomTrailing)
 
-            VStack {
-                ZStack{
+            VStack(spacing: 0) {
+                HStack {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(Color(.jungleSystemColor(.white)))
+                            .font(.system(size: 18, weight: .semibold))
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal, 16)
+                .frame(height: 44)
+                .padding(.top, getSafeArea().top)
+                
+                ZStack {
                     VStack{
                         Image("img_card")
                             .frame(width: 327, height: 505)
@@ -80,9 +96,26 @@ struct QuestDetailView: View {
                 .foregroundStyle(Color(.jungleSystemColor(.white)))
                 .font(.jungleBody(.body1b16))
                 .cornerRadius(12)
+                
+                Spacer()
             }
         }
         .ignoresSafeArea()
+        .navigationBarHidden(true)
+    }
+    
+    func getSafeArea() -> UIEdgeInsets {
+        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = screen.windows.first else {
+            return .zero
+        }
+        return window.safeAreaInsets
+    }
+}
+
+#Preview {
+    NavigationView {
+        QuestDetailView()
     }
 }
 

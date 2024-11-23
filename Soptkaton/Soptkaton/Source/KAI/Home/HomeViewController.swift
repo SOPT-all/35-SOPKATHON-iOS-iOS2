@@ -6,10 +6,10 @@
 //
 
 import UIKit
+import SwiftUI
 
 import SnapKit
 import Then
-import SwiftUI
 
 class HomeViewController: UIViewController {
     
@@ -47,16 +47,15 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.view.backgroundColor = .systemBackground
         setHierarchy()
         setLayout()
         configure()
-        setupQuestView()  
-
+        setupQuestView()
         setupNavigationLogo()
     }
-
+    
     private func setHierarchy() {
         self.containerView.addSubviews(
             characterImage,
@@ -74,7 +73,7 @@ class HomeViewController: UIViewController {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(24)
         }
-    
+        
         characterImage.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(22)
             $0.horizontalEdges.equalToSuperview()
@@ -102,7 +101,7 @@ class HomeViewController: UIViewController {
             $0.height.equalTo(82)
         }
     }
-
+    
     func configure() {
         levelLabel.text = "레벨 1"
         expLabel.text = "70/100"
@@ -113,11 +112,12 @@ class HomeViewController: UIViewController {
             subtitle: "정글에서 강인한 체력은 필수!"
         )
     }
-}
-
-// HomeViewController.swift에 추가될 부분
-
-extension HomeViewController {
+    
+    // 추가된 메서드
+    private func setupQuestView() {
+        setupQuestViewTapGesture()
+    }
+    
     private func setupQuestViewTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(questViewTapped))
         questView.addGestureRecognizer(tapGesture)
@@ -128,28 +128,26 @@ extension HomeViewController {
         let questDetailView = QuestDetailView()
         let hostingController = UIHostingController(rootView: questDetailView)
         
-        // Navigation 설정
-        hostingController.modalPresentationStyle = .fullScreen
+        hostingController.navigationItem.hidesBackButton = true
+        setupCustomBackButton(for: hostingController)
         
-        // 네비게이션으로 push
-        if let navigationController = self.navigationController {
-            navigationController.pushViewController(hostingController, animated: true)
-        } else {
-            // 네비게이션 컨트롤러가 없는 경우 모달로 표시
-            present(hostingController, animated: true)
-        }
+        hostingController.hidesBottomBarWhenPushed = true
+        
+        navigationController?.pushViewController(hostingController, animated: true)
     }
     
-    // viewDidLoad()에서 호출되어야 하는 설정
-    private func setupQuestView() {
-        setupQuestViewTapGesture()
+    private func setupCustomBackButton(for viewController: UIViewController) {
+        let backButton = UIButton(type: .system)
+        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        backButton.tintColor = .white
+        backButton.addTarget(self, action: #selector(customBackButtonTapped), for: .touchUpInside)
+        
+        let backBarButton = UIBarButtonItem(customView: backButton)
+        viewController.navigationItem.leftBarButtonItem = backBarButton
+    }
+    
+    @objc private func customBackButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
-// QuestView.swift에 추가될 부분 (기존 QuestView 클래스에 추가)
-extension QuestView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        isUserInteractionEnabled = true
-    }
-}
