@@ -19,7 +19,7 @@
 
 - 브랜치 이름은 소문자로 한다.
 
-- default branch : `develop`
+- default branch : `main`
 
 ## 우리들의 사진(before)
 <img src = "https://github.com/user-attachments/assets/639cc2f5-b854-4fdd-9ab7-5c97fc75f92c" width ="250">
