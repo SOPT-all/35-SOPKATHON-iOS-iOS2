@@ -15,12 +15,14 @@ struct QuestDetailView: View {
     var onPhotoTaken: (() -> Void)?
     
     private let homeService = HomeService()
+    private let width: CGFloat = UIScreen.main.bounds.width
+    private let height: CGFloat = UIScreen.main.bounds.height
     
     var body: some View {
         ZStack {
             LinearGradient(colors: [Color(.jungleGradientColor(.start)), Color(.jungleGradientColor(.end))], startPoint: .topLeading, endPoint: .bottomTrailing)
 
-            VStack(spacing: 0) {
+            VStack() {
                 HStack {
                     Button(action: {
                         dismiss()
@@ -32,7 +34,7 @@ struct QuestDetailView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 16)
-                .frame(height: 44)
+                .frame(height: 56)
                 .padding(.top, getSafeArea().top)
                 
                 ZStack {
@@ -89,9 +91,11 @@ struct QuestDetailView: View {
                     Text(questData?.quest_description ?? "")
                         .font(.jungleBody(.body2m14))
                         .foregroundStyle(Color(.jungleSystemColor(.white)))
+                        .font(.jungleBody(.body2m14))
                         .frame(width: 279, height: 54)
                         .offset(y: 134)
                 }
+                .offset(y: 24)
                 
                 Button(action: {
                     showImagePicker = true
@@ -103,6 +107,7 @@ struct QuestDetailView: View {
                 .foregroundStyle(Color(.jungleSystemColor(.white)))
                 .font(.jungleBody(.body1b16))
                 .cornerRadius(12)
+                .offset(y: 47)
                 
                 Spacer()
             }
