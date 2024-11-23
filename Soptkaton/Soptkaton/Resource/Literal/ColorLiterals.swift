@@ -35,6 +35,11 @@ enum MainColor: String {
     
 }
 
+enum GradientColor: String {
+    case start = "#171719"
+    case end = "#0B7349"
+}
+
 extension UIColor {
     
     static func jungleGrayScale(_ style: GrayScale) -> UIColor {
@@ -48,6 +53,11 @@ extension UIColor {
     }
     
     static func jungleMainColor(_ style: MainColor) -> UIColor {
+        guard let color = UIColor(hexCode: style.rawValue) else { fatalError("UIColor init failed") }
+        return color
+    }
+    
+    static func jungleGradientColor(_ style: GradientColor) -> UIColor {
         guard let color = UIColor(hexCode: style.rawValue) else { fatalError("UIColor init failed") }
         return color
     }
