@@ -62,7 +62,6 @@ class HomeViewController: UIViewController {
         setLayout()
         setupQuestView()
         setupNavigationLogo()
-        fetchHomeData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +69,8 @@ class HomeViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
         navigationController?.navigationBar.isHidden = false
+        
+        fetchHomeData()
     }
     
     // MARK: - Network
@@ -231,9 +232,13 @@ extension HomeViewController {
     }
 }
 
-// MARK: - Alert
+// alert
 
-extension HomeViewController {
+extension HomeViewController: CustomAlertDelegate {
+    func willDismissAlert() {
+        fetchHomeData()
+    }
+    
     private func showCustomAlert() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first {
@@ -247,6 +252,7 @@ extension HomeViewController {
             }
             
             let alertVC = CustomAlertViewController()
+            alertVC.delegate = self  
             alertVC.experienceText = 40
             alertVC.modalPresentationStyle = .overFullScreen
             alertVC.modalTransitionStyle = .crossDissolve

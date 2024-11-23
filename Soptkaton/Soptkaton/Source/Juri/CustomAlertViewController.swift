@@ -8,9 +8,13 @@
 import UIKit
 
 final class CustomAlertViewController: UIViewController {
+    weak var delegate: CustomAlertDelegate?
+    
+    private let homeService: HomeServiceProtocol
+    
     
     //MARK: - UI Properties
-
+    
     private let alertView = UIView().then {
         $0.backgroundColor = .jungleSystemColor(.white)
         $0.layer.cornerRadius = 16
@@ -38,6 +42,16 @@ final class CustomAlertViewController: UIViewController {
         $0.layer.cornerRadius = 16
     }
     
+    // MARK: - Initializer
+    init(homeService: HomeServiceProtocol = HomeService()) {
+        self.homeService = homeService
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - Properties
     
     var experienceText: Int = 0 {
@@ -51,13 +65,9 @@ final class CustomAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black.withAlphaComponent(0.5)
-
+        
         setHierarchy()
         setLayout()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //TODO: API 불러오기?? experience 받아와서 적용하기
     }
     
     private func setHierarchy() {
@@ -95,7 +105,6 @@ final class CustomAlertViewController: UIViewController {
         }
         
         okButton.snp.makeConstraints {
-            //TODO: 이미지 생기면 다시 설정하기
             $0.bottom.equalToSuperview().inset(16)
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.width.equalTo(279)
@@ -106,7 +115,28 @@ final class CustomAlertViewController: UIViewController {
     
     @objc
     private func okButtonTapped() {
-        self.dismiss(animated: true)
+        Task {
+            do {
+                let response = try await homeService.increaseExperience()
+                
+                if response.success {
+                    self.experienceText = 40
+                    DispatchQueue.main.async { [weak self] in
+                        self?.delegate?.willDismissAlert()
+                        self?.dismiss(animated: true)
+                    }
+                } else {
+                    print("Error: \(response.message)")
+                    DispatchQueue.main.async { [weak self] in
+                        self?.dismiss(animated: true)
+                    }
+                }
+            } catch {
+                print("Error increasing experience: \(error)")
+                DispatchQueue.main.async { [weak self] in
+                    self?.dismiss(animated: true)
+                }
+            }
+        }
     }
-    
 }

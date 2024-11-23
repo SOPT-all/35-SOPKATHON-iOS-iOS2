@@ -8,19 +8,9 @@
 import Foundation
 
 struct BaseResponse<T: Decodable>: Decodable {
-    let data: T?
-    let message: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case data
-        case message
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.data = try? container.decodeIfPresent(T.self, forKey: .data)
-        self.message = try? container.decodeIfPresent(String.self, forKey: .message)
-    }
+    let success: Bool
+    let message: String
+    let data: T
 }
 
 struct QuestResponse: Decodable {
@@ -32,4 +22,13 @@ struct QuestResponse: Decodable {
     let quest_level: String
     let quest_exp: Int
     let quest_description: String
+}
+
+struct ExperienceRequest: Codable {
+    let quest_exp: Int
+}
+
+struct ExperienceResponse: Codable {
+    let success: Bool
+    let message: String
 }
