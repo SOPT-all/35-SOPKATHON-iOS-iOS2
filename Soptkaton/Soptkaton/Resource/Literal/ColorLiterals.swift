@@ -31,7 +31,7 @@ enum SystemColor: String {
 enum MainColor: String {
     
     case main = "#00C875"
-    case sub = "#80EC7E"
+    case sub = "#A9FBD9"
     
 }
 
