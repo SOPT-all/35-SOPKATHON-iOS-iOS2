@@ -9,52 +9,80 @@ import SwiftUI
 
 struct QuestDetailView: View {
     var body: some View {
-        VStack {
-            ZStack{
-                VStack{
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.gray)
-                        .frame(width: 327, height: 505)
-                        .padding()
-                }
-                
-                ZStack {
-                    Capsule()
-                        .fill(Color(.jungleMainColor(.main)))
-                        .frame(width: 87, height: 31)
+        ZStack {
+            LinearGradient(colors: [Color(.jungleGradientColor(.start)), Color(.jungleGradientColor(.end))], startPoint: .topLeading, endPoint: .bottomTrailing)
+
+            VStack {
+                ZStack{
+                    VStack{
+                        Image("img_card")
+                            .frame(width: 327, height: 505)
+                            .padding([.bottom])
+                    }
                     
-                    Text("QLabel")
-                        .foregroundStyle(Color.white)
-                        .font(.jungleHeading(.heading3b20))
+                    VStack {
+                        Text("체력 단련")
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(
+                                Capsule()
+                                    .fill(Color(.jungleMainColor(.main)))
+                            )
+                            .foregroundStyle(Color(.jungleSystemColor(.white)))
+                            .font(.jungleBody(.body1b16))
+                            .offset(y: -185)
+                        
+                        Text("정글에서 강인한 체력은 필수!")
+                            .foregroundStyle(Color(.jungleSystemColor(.white)))
+                            .font(.jungleHeading(.heading3b20))
+                            .offset(y: -170)
+                    }
+                    
+                    HStack{
+                        ZStack {
+                            Image("img_score_bg")
+                            
+                            HStack {
+                                Text("경험치")
+                                Text("|")
+                                Text("+"+"40")
+                            }
+                        }
+                        .foregroundStyle(Color(.jungleMainColor(.sub)))
+                        .font(.jungleBody(.body2m14))
+                        .rotationEffect(.degrees(12))
+                        .offset(y: -2)
+                        
+                        ZStack {
+                            Image("img_middle_shape")
+                            
+                            Text("중급")
+                                .rotationEffect(.degrees(-12))
+                        }
+                        .foregroundStyle(Color(.jungleMainColor(.sub)))
+                        .font(.jungleBody(.body1b16))
+                        .offset(y: -30)
+                    }
+                    
+                    Text("빌딩숲이 가득한 세상 속에서 두 발로 걸으며 체력을 단련해보자! 계단 50개를 올라가다 보면 머리도 맑아질 거야.")
+                        .font(.jungleBody(.body2m14))
+                        .foregroundStyle(Color(.jungleSystemColor(.white)))
+                        .frame(width: 279, height: 54)
+                        .offset(y: 134)
                 }
-                .offset(y: -185)
                 
-                Text("sample")
-                    .offset(y: -170)
-
-                HStack{
-                    Text("sample")
-                    Text("sample")
-                }
-                
-                HStack{
-                    Text("sample")
-                    Text("sample")
-                }
-                
-                Text("sample")
-
-                
+                Button(action: {
+                }, label: {
+                    Text("도전하기")
+                })
+                .frame(width: 327, height: 56)
+                .background(Color(.jungleMainColor(.main)))
+                .foregroundStyle(Color(.jungleSystemColor(.white)))
+                .font(.jungleBody(.body1b16))
+                .cornerRadius(12)
             }
-            
-            Button(action: {
-                print("testing")
-            }, label: {
-                Text("수행하기")
-                    .padding()
-                    .background(Capsule().strokeBorder())
-            })
         }
+        .ignoresSafeArea()
     }
 }
 
