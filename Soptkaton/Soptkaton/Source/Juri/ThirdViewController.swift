@@ -6,24 +6,47 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class ThirdViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    private let storyLabel = UILabel().then {
+        $0.text = "안녕하시렵니까? 스토리텔링 화면입니다만.. 무얼 더 해야하죠...."
+        $0.numberOfLines = 0
+        $0.textAlignment = .center
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .white
+        setHierarchy()
+        setLayout()
+        setupTapGesture()
     }
-    */
-
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(screenTapped))
+        view.addGestureRecognizer(tapGesture)
+        view.isUserInteractionEnabled = true
+    }
+    
+    @objc private func screenTapped() {
+        let tabBarController = TabBarController()
+        tabBarController.modalPresentationStyle = .fullScreen
+        present(tabBarController, animated: true)
+    }
+    
+    private func setHierarchy() {
+        view.addSubview(storyLabel)
+    }
+    
+    private func setLayout() {
+        storyLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+    
+    }
 }

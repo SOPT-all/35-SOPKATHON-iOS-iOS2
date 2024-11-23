@@ -14,7 +14,7 @@ Pods/
 .DS_Store
 .AppleDouble
 .LSOverride
-.PrivacyInfo
+.PrivacyInfo.plist
 
 # Icon must end with two \r
 Icon
