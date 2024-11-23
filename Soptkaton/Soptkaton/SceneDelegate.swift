@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // 2.
         self.window = UIWindow(windowScene: windowScene)
         // 3.
-        self.window?.rootViewController = TabBarController()
+        self.window?.rootViewController = ThirdViewController()
         // 4.
         self.window?.makeKeyAndVisible()
     }

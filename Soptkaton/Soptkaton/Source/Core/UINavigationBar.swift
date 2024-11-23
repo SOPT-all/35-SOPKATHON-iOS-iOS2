@@ -15,8 +15,7 @@ extension UIViewController {
         
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: 124, height: 40)
-        
-        logoImageView.frame = CGRect(x: 24, y: 10, width: 100, height: 30)
+        logoImageView.frame = CGRect(x: 0, y: 10, width: 100, height: 30)
         
         containerView.addSubview(logoImageView)
         
