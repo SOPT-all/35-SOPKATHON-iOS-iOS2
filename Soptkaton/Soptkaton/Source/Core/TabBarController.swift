@@ -14,13 +14,12 @@ class TabBarController: UITabBarController {
         
         let firstViewController = UINavigationController(rootViewController: QuestDetailViewController())
         let secondViewController = UINavigationController(rootViewController: SecondViewController())
-        let thirdViewController = UINavigationController(rootViewController: ThirdViewController())
+      //  let thirdViewController = UINavigationController(rootViewController: ThirdViewController())
         
         firstViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "ic_home_gray7"), tag: 0)
         secondViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "ic_user_gray2"), tag: 1)
-        thirdViewController.tabBarItem = UITabBarItem(title: "3", image: UIImage(systemName: "house.fill"), tag: 2)
-        
-        viewControllers = [firstViewController, secondViewController, thirdViewController]
+    
+        viewControllers = [firstViewController, secondViewController]
         
         setupTabBarStyle()
     }

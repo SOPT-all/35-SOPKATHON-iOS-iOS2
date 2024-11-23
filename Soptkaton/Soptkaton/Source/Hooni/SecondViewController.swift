@@ -86,8 +86,15 @@ class SecondViewController: UIViewController, UIImagePickerControllerDelegate, U
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             imageView.image = image
+            
+            picker.dismiss(animated: true) { [weak self] in
+                let customAlertVC = CustomAlertViewController()
+                customAlertVC.modalPresentationStyle = .overFullScreen
+                customAlertVC.modalTransitionStyle = .crossDissolve
+                customAlertVC.experienceText = 100 
+                self?.present(customAlertVC, animated: true)
+            }
         }
-        picker.dismiss(animated: true)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
