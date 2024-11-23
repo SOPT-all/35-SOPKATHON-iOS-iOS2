@@ -22,4 +22,23 @@ extension UIViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: containerView)
     }
+    
+    func setupCustomBackButton() {
+        navigationItem.hidesBackButton = true
+        
+        let backButton = UIButton(type: .custom)
+        let backImage = UIImage(named: "ic_arrow_left_gray2")
+        backButton.setImage(backImage, for: .normal)
+        backButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        containerView.addSubview(backButton)
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: containerView)
+    }
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
 }
