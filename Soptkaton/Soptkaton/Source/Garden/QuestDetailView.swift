@@ -11,8 +11,10 @@ struct QuestDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showImagePicker = false
     @State private var selectedImage: UIImage?
+    @State private var questData: QuestResponse?
     var onPhotoTaken: (() -> Void)?
     
+    private let homeService = HomeService()
     private let width: CGFloat = UIScreen.main.bounds.width
     private let height: CGFloat = UIScreen.main.bounds.height
     
@@ -54,7 +56,7 @@ struct QuestDetailView: View {
                             .font(.jungleBody(.body1b16))
                             .offset(y: -185)
                         
-                        Text("정글에서 강인한 체력은 필수!")
+                        Text(questData?.quest_name ?? "")
                             .foregroundStyle(Color(.jungleSystemColor(.white)))
                             .font(.jungleHeading(.heading3b20))
                             .offset(y: -170)
@@ -67,7 +69,7 @@ struct QuestDetailView: View {
                             HStack {
                                 Text("경험치")
                                 Text("|")
-                                Text("+"+"40")
+                                Text("+" + "\(questData?.quest_exp ?? 0)")
                             }
                         }
                         .foregroundStyle(Color(.jungleMainColor(.sub)))
@@ -78,7 +80,7 @@ struct QuestDetailView: View {
                         ZStack {
                             Image("img_middle_shape")
                             
-                            Text("중급")
+                            Text(questData?.quest_level ?? "")
                                 .rotationEffect(.degrees(-12))
                         }
                         .foregroundStyle(Color(.jungleMainColor(.sub)))
@@ -86,7 +88,8 @@ struct QuestDetailView: View {
                         .offset(y: -30)
                     }
                     
-                    Text("빌딩숲이 가득한 세상 속에서 두 발로 걸으며 체력을 단련해보자! 계단 50개를 올라가다 보면 머리도 맑아질 거야.")
+                    Text(questData?.quest_description ?? "")
+                        .font(.jungleBody(.body2m14))
                         .foregroundStyle(Color(.jungleSystemColor(.white)))
                         .font(.jungleBody(.body2m14))
                         .frame(width: 279, height: 54)
@@ -119,10 +122,17 @@ struct QuestDetailView: View {
                 }
             }
             .edgesIgnoringSafeArea(.all)
-            .navigationBarHidden(true)   
+            .navigationBarHidden(true)
         }
         .ignoresSafeArea()
         .navigationBarHidden(true)
+        .task {
+            do {
+                questData = try await homeService.fetchQuestData()
+            } catch {
+                print("Failed to fetch quest data:", error)
+            }
+        }
     }
     
     func getSafeArea() -> UIEdgeInsets {
@@ -138,7 +148,7 @@ struct QuestDetailView: View {
            let window = windowScene.windows.first,
            let rootViewController = window.rootViewController {
             let alertVC = CustomAlertViewController()
-            alertVC.experienceText = 40
+            alertVC.experienceText = questData?.quest_exp ?? 0
             alertVC.modalPresentationStyle = .overFullScreen
             alertVC.modalTransitionStyle = .crossDissolve
             rootViewController.present(alertVC, animated: true)

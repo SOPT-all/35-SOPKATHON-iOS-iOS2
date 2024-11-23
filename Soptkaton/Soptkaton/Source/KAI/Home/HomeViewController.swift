@@ -10,16 +10,19 @@ import SwiftUI
 
 import SnapKit
 import Then
+import Kingfisher
 
 class HomeViewController: UIViewController {
     
+    private let homeService: HomeServiceProtocol = HomeService()
+        
     private let containerView = UIView()
     
     private let characterImage = UIImageView().then {
-        $0.image = .imgLevel1
         $0.contentMode = .scaleAspectFit
         $0.backgroundColor = .jungleGrayScale(.gray6)
         $0.makeCornerRadius(cornerRadius: 16)
+        $0.clipsToBounds = true
     }
     
     private let levelLabel = UILabel().then {
@@ -49,13 +52,14 @@ class HomeViewController: UIViewController {
         $0.makeCornerRadius(cornerRadius: 16)
     }
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = .systemBackground
         setHierarchy()
         setLayout()
-        configure()
         setupQuestView()
         setupNavigationLogo()
     }
@@ -63,10 +67,67 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // 네비게이션 바 보이기 설정
         navigationController?.setNavigationBarHidden(false, animated: animated)
         navigationController?.navigationBar.isHidden = false
+        
+        fetchHomeData()
     }
+    
+    // MARK: - Network
+    
+    private func fetchHomeData() {
+        Task {
+            do {
+                let questData = try await homeService.fetchQuestData()
+                await MainActor.run {
+                    updateUI(with: questData)
+                }
+            } catch {
+                print("Error fetching home data:", error)
+            }
+        }
+    }
+    
+    private func updateUI(with data: QuestResponse) {
+        levelLabel.text = data.member_level
+        expLabel.text = data.member_exp
+        
+        if let imageURL = URL(string: data.member_img_url) {
+            let options: KingfisherOptionsInfo = [
+                .cacheOriginalImage,
+                .transition(.fade(0.2)),
+                .scaleFactor(UIScreen.main.scale),
+                .forceTransition,
+                .keepCurrentImageWhileLoading
+            ]
+            
+            let width = characterImage.bounds.width > 0 ? characterImage.bounds.width : UIScreen.main.bounds.width - 48
+            let height = characterImage.bounds.height > 0 ? characterImage.bounds.height : 437
+            
+            let processor = ResizingImageProcessor(referenceSize: CGSize(width: width, height: height))
+                |> DownsamplingImageProcessor(size: CGSize(width: width, height: height))
+            
+            characterImage.kf.indicatorType = .activity
+            characterImage.kf.setImage(
+                with: imageURL,
+                placeholder: UIImage(color: .jungleGrayScale(.gray6)),
+                options: options + [.processor(processor)]) { result in
+                    switch result {
+                    case .success(let value):
+                        print("Image successfully loaded. Size: \(value.image.size)")
+                    case .failure(let error):
+                        print("Error loading image: \(error.localizedDescription)")
+                    }
+                }
+        }
+        
+        questView.configure(
+            title: data.quest_name,
+            level: data.quest_level,
+            subtitle: data.quest_summary
+        )
+    }
+    // MARK: - UI Setup
     
     private func setHierarchy() {
         self.containerView.addSubviews(
@@ -119,17 +180,7 @@ class HomeViewController: UIViewController {
             $0.height.equalTo(82)
         }
     }
-    
-    private func configure() {
-        levelLabel.text = "레벨 1"
-        expLabel.text = "70/100"
-        
-        questView.configure(
-            title: "체력 단련",
-            level: "고급",
-            subtitle: "정글에서 강인한 체력은 필수!"
-        )
-    }
+
     
     private func setupQuestView() {
         setupQuestViewTapGesture()
@@ -142,10 +193,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func questViewTapped() {
-         pushToQuestDetailView()
-     }
+        pushToQuestDetailView()
+    }
 }
 
+// MARK: - Navigation
 
 extension HomeViewController {
     private func pushToQuestDetailView() {
@@ -180,7 +232,13 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController {
+// alert
+
+extension HomeViewController: CustomAlertDelegate {
+    func willDismissAlert() {
+        fetchHomeData()
+    }
+    
     private func showCustomAlert() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first {
@@ -194,10 +252,25 @@ extension HomeViewController {
             }
             
             let alertVC = CustomAlertViewController()
+            alertVC.delegate = self  
             alertVC.experienceText = 40
             alertVC.modalPresentationStyle = .overFullScreen
             alertVC.modalTransitionStyle = .crossDissolve
             topController?.present(alertVC, animated: true)
         }
+    }
+}
+
+extension UIImage {
+    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+        let rect = CGRect(origin: .zero, size: size)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        color.setFill()
+        UIRectFill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        guard let cgImage = image?.cgImage else { return nil }
+        self.init(cgImage: cgImage)
     }
 }

@@ -11,7 +11,7 @@ import Moya
 
 enum HomeTargetType {
     case getHomeData
-    case postMemberSuccess
+    case increaseExperience(ExperienceRequest)
 }
 
 extension HomeTargetType: TargetType {
@@ -23,37 +23,33 @@ extension HomeTargetType: TargetType {
     }
     
     var path: String {
-        switch self {
-        case .getHomeData:
-            return "/api/v1/quests/home"
-        case .postMemberSuccess:
-            return "/api/v1/members/success"
+            switch self {
+            case .getHomeData:
+                return "/api/v1/quests/home"
+            case .increaseExperience:
+                return "/api/v1/members/success"
+            }
         }
-    }
-    
-    var method: Moya.Method {
-        switch self {
-        case .getHomeData:
-            return .get
-        case .postMemberSuccess:
-            return .post
+        
+        var method: Moya.Method {
+            switch self {
+            case .getHomeData:
+                return .get
+            case .increaseExperience:
+                return .post
+            }
         }
-    }
-    
-    var task: Task {
-        switch self {
-        case .getHomeData:
-            return .requestPlain
-        case .postMemberSuccess:
-            // TODO:  만약 POST 요청에 body가 필요하다면 아래와 같이 파라미터를 추가
-            // return .requestParameters(parameters: [:], encoding: JSONEncoding.default)
-            return .requestPlain
+        
+        var task: Task {
+            switch self {
+            case .getHomeData:
+                return .requestPlain
+            case .increaseExperience(let request):
+                return .requestJSONEncodable(request)
+            }
         }
-    }
-    
-    var headers: [String: String]? {
-        return [
-            "Content-Type": "application/json"
-        ]
-    }
+        
+        var headers: [String: String]? {
+            return ["Content-Type": "application/json"]
+        }
 }
