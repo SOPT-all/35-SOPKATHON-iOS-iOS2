@@ -102,7 +102,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func configure() {
+    private func configure() {
         levelLabel.text = "레벨 1"
         expLabel.text = "70/100"
         
@@ -113,7 +113,6 @@ class HomeViewController: UIViewController {
         )
     }
     
-    // 추가된 메서드
     private func setupQuestView() {
         setupQuestViewTapGesture()
     }
@@ -125,7 +124,18 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func questViewTapped() {
-        let questDetailView = QuestDetailView()
+         pushToQuestDetailView()
+     }
+}
+
+// MARK: - Navigation
+extension HomeViewController {
+    private func pushToQuestDetailView() {
+        var questDetailView = QuestDetailView(onPhotoTaken: { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self?.showCustomAlert()
+            }
+        })
         let hostingController = UIHostingController(rootView: questDetailView)
         
         hostingController.navigationItem.hidesBackButton = true
@@ -151,3 +161,25 @@ class HomeViewController: UIViewController {
     }
 }
 
+// MARK: - Alert
+extension HomeViewController {
+    private func showCustomAlert() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            var topController = window.rootViewController
+            while let presentedViewController = topController?.presentedViewController {
+                topController = presentedViewController
+            }
+            
+            if let navigationController = topController as? UINavigationController {
+                topController = navigationController.topViewController
+            }
+            
+            let alertVC = CustomAlertViewController()
+            alertVC.experienceText = 40
+            alertVC.modalPresentationStyle = .overFullScreen
+            alertVC.modalTransitionStyle = .crossDissolve
+            topController?.present(alertVC, animated: true)
+        }
+    }
+}
