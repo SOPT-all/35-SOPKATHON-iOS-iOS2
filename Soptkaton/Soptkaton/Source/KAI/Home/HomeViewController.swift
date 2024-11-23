@@ -14,10 +14,6 @@ class HomeViewController: UIViewController {
     
     private let containerView = UIView()
     
-    private let headerImage = UIImageView().then {
-        $0.image = .headerLogo
-    }
-    
     private let characterImage = UIImageView().then {
         $0.image = UIImage(systemName: "person")
         $0.contentMode = .scaleAspectFit
@@ -55,11 +51,12 @@ class HomeViewController: UIViewController {
         setHierarchy()
         setLayout()
         configure()
+        
+        setupNavigationLogo()
     }
 
     private func setHierarchy() {
         self.containerView.addSubviews(
-            headerImage,
             characterImage,
             levelLabel,
             expLabel,
@@ -75,16 +72,9 @@ class HomeViewController: UIViewController {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(24)
         }
-        
-        headerImage.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
-            $0.leading.equalToSuperview()
-            $0.width.equalTo(128)
-            $0.height.equalTo(32)
-        }
-        
+    
         characterImage.snp.makeConstraints {
-            $0.top.equalTo(headerImage.snp.bottom).offset(22)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(22)
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(437)
         }
