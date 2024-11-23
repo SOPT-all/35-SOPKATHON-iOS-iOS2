@@ -9,6 +9,7 @@ import UIKit
 
 import SnapKit
 import Then
+import SwiftUI
 
 class HomeViewController: UIViewController {
     
@@ -51,7 +52,8 @@ class HomeViewController: UIViewController {
         setHierarchy()
         setLayout()
         configure()
-        
+        setupQuestView()  
+
         setupNavigationLogo()
     }
 
@@ -110,5 +112,44 @@ class HomeViewController: UIViewController {
             level: "고급",
             subtitle: "정글에서 강인한 체력은 필수!"
         )
+    }
+}
+
+// HomeViewController.swift에 추가될 부분
+
+extension HomeViewController {
+    private func setupQuestViewTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(questViewTapped))
+        questView.addGestureRecognizer(tapGesture)
+        questView.isUserInteractionEnabled = true
+    }
+    
+    @objc private func questViewTapped() {
+        let questDetailView = QuestDetailView()
+        let hostingController = UIHostingController(rootView: questDetailView)
+        
+        // Navigation 설정
+        hostingController.modalPresentationStyle = .fullScreen
+        
+        // 네비게이션으로 push
+        if let navigationController = self.navigationController {
+            navigationController.pushViewController(hostingController, animated: true)
+        } else {
+            // 네비게이션 컨트롤러가 없는 경우 모달로 표시
+            present(hostingController, animated: true)
+        }
+    }
+    
+    // viewDidLoad()에서 호출되어야 하는 설정
+    private func setupQuestView() {
+        setupQuestViewTapGesture()
+    }
+}
+
+// QuestView.swift에 추가될 부분 (기존 QuestView 클래스에 추가)
+extension QuestView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        isUserInteractionEnabled = true
     }
 }
