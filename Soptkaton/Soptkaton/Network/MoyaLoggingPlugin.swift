@@ -1,8 +1,8 @@
 //
 //  MoyaLoggingPlugin.swift
-//  KkuMulKum
+//  Soptkaton
 //
-//  Created by 김진웅 on 7/4/24.
+//  Created by 이지훈 on 11/21/24.
 //
 
 import Foundation

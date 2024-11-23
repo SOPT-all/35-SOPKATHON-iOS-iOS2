@@ -1,8 +1,8 @@
 //
 //  AuthTargetType.swift
-//  KkuMulKum
+//  Soptkaton
 //
-//  Created by 이지훈 on 7/18/24.
+//  Created by 이지훈 on 11/21/24.
 //
 import Foundation
 import Moya
