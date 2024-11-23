@@ -10,7 +10,7 @@
 * Libraries: Alamofire, Kingfisher, Moya, ReactiveSwift, RxSwift, SnapKit, Then
 
 ## About Developers
-|[이지훈]<https://github.com/hooni0918>|[조호근]<https://github.com/joho2022>|[최주리]<https://github.com/juri123123>|[한정원]<https://github.com/Gardeniaa101>|
+|[이지훈](https://github.com/hooni0918)|[조호근](https://github.com/joho2022)|[최주리](https://github.com/juri123123)|[한정원](https://github.com/Gardeniaa101)|
 |:---:|:---:|:---:|:---:|
 |리드|팀원|팀원|팀원|
 
