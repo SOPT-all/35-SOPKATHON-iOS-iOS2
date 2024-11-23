@@ -58,7 +58,7 @@ class TabBarController: UITabBarController {
                     clockwise: true)
 
         borderLayer.path = path.cgPath
-        borderLayer.strokeColor = UIColor.jungleGrayScale(.gray4).cgColor
+        borderLayer.strokeColor = UIColor.jungleGrayScale(.gray9).cgColor
         borderLayer.fillColor = UIColor.clear.cgColor
         borderLayer.lineWidth = 1
 
