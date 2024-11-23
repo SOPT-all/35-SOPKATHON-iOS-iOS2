@@ -47,5 +47,6 @@ class ThirdViewController: UIViewController {
             $0.center.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
         }
+    
     }
 }
