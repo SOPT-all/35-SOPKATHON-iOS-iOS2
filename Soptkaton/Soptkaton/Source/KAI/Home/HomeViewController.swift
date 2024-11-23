@@ -13,10 +13,15 @@ import Then
 
 class HomeViewController: UIViewController {
     
+    // MARK: - Properties
+    
+    private let homeService: HomeServiceProtocol = HomeService()
+    
+    // MARK: - UI Components
+    
     private let containerView = UIView()
     
     private let characterImage = UIImageView().then {
-        $0.image = .imgLevel1
         $0.contentMode = .scaleAspectFit
         $0.backgroundColor = .jungleGrayScale(.gray6)
         $0.makeCornerRadius(cornerRadius: 16)
@@ -49,24 +54,59 @@ class HomeViewController: UIViewController {
         $0.makeCornerRadius(cornerRadius: 16)
     }
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = .systemBackground
         setHierarchy()
         setLayout()
-        configure()
         setupQuestView()
         setupNavigationLogo()
+        fetchHomeData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // 네비게이션 바 보이기 설정
         navigationController?.setNavigationBarHidden(false, animated: animated)
         navigationController?.navigationBar.isHidden = false
     }
+    
+    // MARK: - Network
+    
+    private func fetchHomeData() {
+        Task {
+            do {
+                let questData = try await homeService.fetchQuestData()
+                await MainActor.run {
+                    updateUI(with: questData)
+                }
+            } catch {
+                print("Error fetching home data:", error)
+                // TODO: Error handling
+            }
+        }
+    }
+    
+    private func updateUI(with data: QuestResponse) {
+        levelLabel.text = data.member_level
+        expLabel.text = data.member_exp
+        
+        if let imageURL = URL(string: data.member_img_url) {
+            // TODO: Implement image loading using your preferred method
+            // For example: SDWebImage, Kingfisher, etc.
+        }
+        
+        questView.configure(
+            title: data.quest_name,
+            level: data.quest_level,
+            subtitle: data.quest_summary
+        )
+    }
+    
+    // MARK: - UI Setup
     
     private func setHierarchy() {
         self.containerView.addSubviews(
@@ -120,17 +160,6 @@ class HomeViewController: UIViewController {
         }
     }
     
-    private func configure() {
-        levelLabel.text = "레벨 1"
-        expLabel.text = "70/100"
-        
-        questView.configure(
-            title: "체력 단련",
-            level: "고급",
-            subtitle: "정글에서 강인한 체력은 필수!"
-        )
-    }
-    
     private func setupQuestView() {
         setupQuestViewTapGesture()
     }
@@ -142,10 +171,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func questViewTapped() {
-         pushToQuestDetailView()
-     }
+        pushToQuestDetailView()
+    }
 }
 
+// MARK: - Navigation
 
 extension HomeViewController {
     private func pushToQuestDetailView() {
@@ -179,6 +209,8 @@ extension HomeViewController {
         navigationController?.popViewController(animated: true)
     }
 }
+
+// MARK: - Alert
 
 extension HomeViewController {
     private func showCustomAlert() {

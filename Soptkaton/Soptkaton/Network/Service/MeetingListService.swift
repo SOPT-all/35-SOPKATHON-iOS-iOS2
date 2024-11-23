@@ -6,24 +6,31 @@
 //
 
 import Foundation
-
 import Moya
 
 protocol HomeServiceProtocol {
-    
+    func fetchQuestData() async throws -> QuestResponse
 }
 
+// MARK: - Real Network Service
 class HomeService: HomeServiceProtocol {
-    private let provider = MoyaProvider<HomeTargetType>(plugins: [NetworkLoggerPlugin()])
-    
-    func performRequest<T: Decodable>(_ target: HomeTargetType) async throws -> T {
+    private let provider = MoyaProvider<HomeTargetType>(plugins: [MoyaLoggingPlugin()])
+
+    func fetchQuestData() async throws -> QuestResponse {
         return try await withCheckedThrowingContinuation { continuation in
-            provider.request(target) { result in
+            provider.request(.getHomeData) { result in
                 switch result {
                 case .success(let response):
                     do {
-                        let decodedResponse = try JSONDecoder().decode(T.self, from: response.data)
-                        continuation.resume(returning: decodedResponse)
+                        let baseResponse = try JSONDecoder().decode(BaseResponse<QuestResponse>.self, from: response.data)
+                        
+                        
+                        guard let questData = baseResponse.data else {
+                            continuation.resume(throwing: NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "데이터가 없습니다."]))
+                            return
+                        }
+                        
+                        continuation.resume(returning: questData)
                     } catch {
                         continuation.resume(throwing: error)
                     }

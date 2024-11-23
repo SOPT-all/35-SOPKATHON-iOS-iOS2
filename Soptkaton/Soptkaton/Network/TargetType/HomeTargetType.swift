@@ -45,8 +45,6 @@ extension HomeTargetType: TargetType {
         case .getHomeData:
             return .requestPlain
         case .postMemberSuccess:
-            // TODO:  만약 POST 요청에 body가 필요하다면 아래와 같이 파라미터를 추가
-            // return .requestParameters(parameters: [:], encoding: JSONEncoding.default)
             return .requestPlain
         }
     }
