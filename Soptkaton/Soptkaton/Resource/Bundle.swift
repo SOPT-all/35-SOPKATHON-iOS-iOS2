@@ -9,7 +9,7 @@ import Foundation
 
 extension Bundle {
     var baseURL: URL? {
-        guard let path = self.path(forResource: "Info", ofType: "plist"),
+        guard let path = self.path(forResource: "PrivacyInfo", ofType: "plist"),
               let dict = NSDictionary(contentsOfFile: path),
               let baseURLString = dict["BASE_URL"] as? String else {
             return nil
