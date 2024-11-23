@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstViewController = UINavigationController(rootViewController: FirstViewController())
+        let firstViewController = UINavigationController(rootViewController: QuestDetailViewController())
         let secondViewController = UINavigationController(rootViewController: SecondViewController())
         let thirdViewController = UINavigationController(rootViewController: ThirdViewController())
         

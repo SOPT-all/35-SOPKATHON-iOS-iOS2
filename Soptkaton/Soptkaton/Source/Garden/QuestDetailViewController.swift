@@ -1,13 +1,13 @@
 //
-//  FirstViewController.swift
+//  QuestDetailViewController.swift
 //  Soptkaton
 //
 //  Created by 최주리 on 11/23/24.
 //
 
-import UIKit
+import SwiftUI
 
-class FirstViewController: UIViewController {
+class QuestDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
