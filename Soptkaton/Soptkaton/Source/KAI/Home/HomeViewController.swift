@@ -122,12 +122,3 @@ class HomeViewController: UIViewController {
         )
     }
 }
-
-#if DEBUG
-import SwiftUI
-
-#Preview {
-    HomeViewController()
-}
-
-#endif
