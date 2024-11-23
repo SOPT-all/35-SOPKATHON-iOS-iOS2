@@ -27,3 +27,9 @@
 
 ## 🌴 우리들의 사진(before)
 <img src = "https://github.com/user-attachments/assets/639cc2f5-b854-4fdd-9ab7-5c97fc75f92c" width ="250">
+(After)
+<img src = "https://github.com/user-attachments/assets/5216e59e-006b-446e-859e-602788cb4ed8" width ="250">
+
+## 🌴 시연영상
+https://github.com/user-attachments/assets/13665319-6680-4aa2-b706-4e63d92a07cb
+
