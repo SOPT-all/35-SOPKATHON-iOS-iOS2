@@ -26,7 +26,7 @@ class ThirdViewController: UIViewController {
     }
     
     private func setHierarchy() {
-        view.addSubviews(storyLabel)
+        view.addSubview(storyLabel)
     }
     
     private func setLayout() {
