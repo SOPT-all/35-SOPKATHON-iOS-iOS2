@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let firstViewController = UINavigationController(rootViewController: FourthViewController())
+        let firstViewController = UINavigationController(rootViewController: HomeViewController())
         let secondViewController = UINavigationController(rootViewController: SecondViewController())
 
         firstViewController.tabBarItem = UITabBarItem(
