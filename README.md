@@ -13,7 +13,7 @@
 |[이지훈](https://github.com/hooni0918)|[조호근](https://github.com/joho2022)|[최주리](https://github.com/juri123123)|[한정원](https://github.com/Gardeniaa101)|
 |:---:|:---:|:---:|:---:|
 |<img src = "https://github.com/user-attachments/assets/16af9a50-880a-4084-a787-ce82e5804ca3" width ="100">|<img src = "https://avatars.githubusercontent.com/u/104732020?v=4" width ="100">|<img src = "https://avatars.githubusercontent.com/u/80569323?v=4" width ="100">|<img src = "https://avatars.githubusercontent.com/u/164545050?v=4" width ="100">|
-|리드|팀원|팀원|팀원|
+|팀 리드|팀원|팀원|팀원|
 
 ## Branch Convention
 * 브랜치 이름 : `커밋타입/#이슈번호` - 예시) `feat/#3`
