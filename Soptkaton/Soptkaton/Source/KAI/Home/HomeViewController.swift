@@ -10,21 +10,19 @@ import SwiftUI
 
 import SnapKit
 import Then
+import Kingfisher
 
 class HomeViewController: UIViewController {
     
-    // MARK: - Properties
-    
     private let homeService: HomeServiceProtocol = HomeService()
-    
-    // MARK: - UI Components
-    
+        
     private let containerView = UIView()
     
     private let characterImage = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.backgroundColor = .jungleGrayScale(.gray6)
         $0.makeCornerRadius(cornerRadius: 16)
+        $0.clipsToBounds = true
     }
     
     private let levelLabel = UILabel().then {
@@ -85,7 +83,6 @@ class HomeViewController: UIViewController {
                 }
             } catch {
                 print("Error fetching home data:", error)
-                // TODO: Error handling
             }
         }
     }
@@ -95,8 +92,32 @@ class HomeViewController: UIViewController {
         expLabel.text = data.member_exp
         
         if let imageURL = URL(string: data.member_img_url) {
-            // TODO: Implement image loading using your preferred method
-            // For example: SDWebImage, Kingfisher, etc.
+            let options: KingfisherOptionsInfo = [
+                .cacheOriginalImage,
+                .transition(.fade(0.2)),
+                .scaleFactor(UIScreen.main.scale),
+                .forceTransition,
+                .keepCurrentImageWhileLoading
+            ]
+            
+            let width = characterImage.bounds.width > 0 ? characterImage.bounds.width : UIScreen.main.bounds.width - 48
+            let height = characterImage.bounds.height > 0 ? characterImage.bounds.height : 437
+            
+            let processor = ResizingImageProcessor(referenceSize: CGSize(width: width, height: height))
+                |> DownsamplingImageProcessor(size: CGSize(width: width, height: height))
+            
+            characterImage.kf.indicatorType = .activity
+            characterImage.kf.setImage(
+                with: imageURL,
+                placeholder: UIImage(color: .jungleGrayScale(.gray6)),
+                options: options + [.processor(processor)]) { result in
+                    switch result {
+                    case .success(let value):
+                        print("Image successfully loaded. Size: \(value.image.size)")
+                    case .failure(let error):
+                        print("Error loading image: \(error.localizedDescription)")
+                    }
+                }
         }
         
         questView.configure(
@@ -105,7 +126,6 @@ class HomeViewController: UIViewController {
             subtitle: data.quest_summary
         )
     }
-    
     // MARK: - UI Setup
     
     private func setHierarchy() {
@@ -159,6 +179,7 @@ class HomeViewController: UIViewController {
             $0.height.equalTo(82)
         }
     }
+
     
     private func setupQuestView() {
         setupQuestViewTapGesture()
@@ -231,5 +252,19 @@ extension HomeViewController {
             alertVC.modalTransitionStyle = .crossDissolve
             topController?.present(alertVC, animated: true)
         }
+    }
+}
+
+extension UIImage {
+    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+        let rect = CGRect(origin: .zero, size: size)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        color.setFill()
+        UIRectFill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        guard let cgImage = image?.cgImage else { return nil }
+        self.init(cgImage: cgImage)
     }
 }
