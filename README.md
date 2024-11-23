@@ -15,6 +15,8 @@
 |:---:|:---:|:---:|:---:|
 |<img src = "https://github.com/user-attachments/assets/16af9a50-880a-4084-a787-ce82e5804ca3" width ="100">|<img src = "https://avatars.githubusercontent.com/u/104732020?v=4" width ="100">|<img src = "https://avatars.githubusercontent.com/u/80569323?v=4" width ="100">|<img src = "https://avatars.githubusercontent.com/u/164545050?v=4" width ="100">|
 |팀 리드|팀원|팀원|팀원|
+|네트워크 모듈,카메라 custom |홈 화면 |Alert, 화면이동로직 세팅|사용기술 View|
+
 
 ## 🌴 Branch Convention
 * 브랜치 이름 : `커밋타입/#이슈번호` - 예시) `feat/#3`
